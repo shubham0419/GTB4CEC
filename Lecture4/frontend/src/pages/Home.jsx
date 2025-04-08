@@ -10,7 +10,7 @@ const Home = () => {
   const getAllTodos = async()=>{
     try {
       const res = await axios.get("http://localhost:5000/alltodos");
-      console.log(res.data.TODOS)
+      console.log(res.data.TODOS);
       setAllTodos(res.data.TODOS);
     } catch (error) {
       console.log(error);
@@ -21,16 +21,21 @@ const Home = () => {
     getAllTodos();
   },[])
 
-  const handleSubmit = async()=>{
-
+  const handleSubmit = async(event)=>{
+    event.preventDefault();
+    const payload = {
+      title,
+      description
+    }
+    const res = await axios.post("http://localhost:5000/create",payload);
+    setAllTodos(res.data.TODOS);
   }
+
   const handleTitleChange = (event)=>{
     setTitle(event.target.value)
-    console.log(title);
   }
   const handleDesChange = (event)=>{
     setDescription(event.target.value)
-    console.log(description);
   }
 
   return (
