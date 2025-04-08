@@ -11,7 +11,11 @@ const TODOS = [
   {
     id: 1,
     title: "React",
-    description: "Learning React",
+    description: "Learning React from scratch",
+  },{
+    id: 2,
+    title: "React advance",
+    description: "Learning React advance from scratch",
   },
 ];
 
