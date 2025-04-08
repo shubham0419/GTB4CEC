@@ -7,6 +7,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const TODOS = [
   {
+    id:1,
     title:"React",
     description:"Learning React"
   }
@@ -27,16 +28,20 @@ app.get("/alltodos",async(req,res)=>{
 app.post("/create",async(req,res)=>{
   try {
     const {title,description} = req.body;
-
     if(!title || !description){
       res.status(401).json({message:"title and description are required"})
     }
-
-    TODOS.push({title,description});
-
+    TODOS.push({
+      id:Math.random(),
+      title,
+      description
+    });
+    res.status(200).json({TODOS});
   } catch (error) {
-    
+    res.status(402).json({message:error.message})
   }
 })
+
+app.put("/update/:id")
 
 app.listen(PORT, () => console.log("Server running on port " + PORT));
