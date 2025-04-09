@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import Todo from '../components/Todo';
 
 const Home = () => {
   const [allTodos,setAllTodos] = useState([]);
@@ -39,17 +40,14 @@ const Home = () => {
   }
 
   return (
-    <div>
+    <div >
       <form onSubmit={handleSubmit}>
         <input onChange={handleTitleChange} type='text' placeholder='Title'/>
         <input onChange={handleDesChange} type='text' placeholder='Description'/>
         <button>Add</button>
       </form>
       {allTodos.map((todo)=>{
-        return <div key={todo.id}>
-          <h3>{todo.title}</h3>
-          <p>{todo.description}</p>
-        </div>
+        return <Todo key={todo.id} singleTodo={todo} setter={setAllTodos}/>
       })}
     </div>
   )
