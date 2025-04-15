@@ -9,6 +9,7 @@ const login = async(req,res)=>{
       res.status(404).json({message:"user not found"})
     }
     const isMatched = password==isUser.password;
+
     if(!isMatched){
       res.status(404).json({message:"Invalid password"})
     }
@@ -18,7 +19,9 @@ const login = async(req,res)=>{
       name:isUser.name,
       // id:isUser.id
     }
+    
     const token = JWT.sign(user,process.env.JWT_SECRET,{expiresIn:"1m"});
+
     res.status(200).json({
       user,
       token

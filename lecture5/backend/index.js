@@ -10,6 +10,6 @@ app.get("/", (req, res) => {
   res.status(200).json({message:"you have the Access"})
 });
 
-app.use("/v1",authRoutes);
+app.use("/auth",authRoutes);
 
 app.listen(PORT, () => console.log("Server running on port " + PORT));
