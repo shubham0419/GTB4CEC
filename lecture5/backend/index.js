@@ -5,6 +5,7 @@ const PORT = 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const authRoutes = require("./routes/auth.route");
+const connectDb = require("./db");
 
 app.get("/", (req, res) => {
   res.status(200).json({message:"you have the Access"})
@@ -12,4 +13,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth",authRoutes);
 
-app.listen(PORT, () => console.log("Server running on port " + PORT));
+app.listen(PORT, () => {
+  connectDb()
+  console.log("Server running on port " + PORT)
+});
