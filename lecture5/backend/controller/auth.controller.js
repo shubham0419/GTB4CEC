@@ -1,10 +1,10 @@
 const JWT = require("jsonwebtoken");
-const Users = require("../users");
+const Users = require("../model/user.schema");
 
 const login = async(req,res)=>{
   try {
     const {email,password} = req.body;
-    const isUser = Users.find((usr)=>usr.email===email);
+    const isUser = Users.findOne({email});
     if(!isUser){
       res.status(404).json({message:"user not found"})
     }
