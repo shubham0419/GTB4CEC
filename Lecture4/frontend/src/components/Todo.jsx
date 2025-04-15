@@ -2,6 +2,7 @@ import React from "react";
 import './Todo.css'
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { updateTodo } from "../redux/features/todo/todoSlice";
 
 const Todo = ({singleTodo}) => {
   const dispatch = useDispatch()

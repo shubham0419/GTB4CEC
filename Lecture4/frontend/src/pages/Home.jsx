@@ -6,7 +6,7 @@ import { updateTodo } from '../redux/features/todo/todoSlice';
 
 const Home = () => {
   // const [allTodos,setAllTodos] = useState([]);
-  const allTodos = useSelector(state=>state.Todos.value);
+  const allTodos = useSelector(state => state.todo.value)
   const dispatch = useDispatch();
 
   const [title,setTitle] = useState("");
