@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Todo from '../components/Todo';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateTodo } from '../redux/features/todo/todoSlice';
 
 const Home = () => {
-  const [allTodos,setAllTodos] = useState([]);
+  // const [allTodos,setAllTodos] = useState([]);
+  const allTodos = useSelector(state=>state.Todos.value);
+  const dispatch = useDispatch();
+
   const [title,setTitle] = useState("");
   const [description,setDescription] = useState("");
   // async function getAllTodos(){
@@ -12,7 +17,8 @@ const Home = () => {
     try {
       const res = await axios.get("http://localhost:5000/alltodos");
       console.log(res.data.TODOS);
-      setAllTodos(res.data.TODOS);
+      // setAllTodos(res.data.TODOS);
+      dispatch(updateTodo(res.data.TODOS));
     } catch (error) {
       console.log(error);
     }
