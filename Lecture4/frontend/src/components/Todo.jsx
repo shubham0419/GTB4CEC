@@ -1,13 +1,16 @@
 import React from "react";
 import './Todo.css'
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
-const Todo = ({singleTodo,setter}) => {
+const Todo = ({singleTodo}) => {
+  const dispatch = useDispatch()
 
   const handleDelete = async()=>{
     try {
       let res = await axios.delete(`http://localhost:5000/delete/${singleTodo.id}`);
-      setter(res.data.TODOS);  
+      // setter(res.data.TODOS); 
+      dispatch(updateTodo(res.data.TODOS));
     } catch (error) {
       console.log(error); 
     }

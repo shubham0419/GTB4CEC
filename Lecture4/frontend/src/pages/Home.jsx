@@ -35,7 +35,8 @@ const Home = () => {
       description
     }
     const res = await axios.post("http://localhost:5000/create",payload);
-    setAllTodos(res.data.TODOS);
+    // setAllTodos(res.data.TODOS);
+    dispatch(updateTodo(res.data.TODOS));
   }
 
   const handleTitleChange = (event)=>{
@@ -53,7 +54,7 @@ const Home = () => {
         <button>Add</button>
       </form>
       {allTodos.map((todo)=>{
-        return <Todo key={todo.id} singleTodo={todo} setter={setAllTodos}/>
+        return <Todo key={todo.id} singleTodo={todo} />
       })}
     </div>
   )
