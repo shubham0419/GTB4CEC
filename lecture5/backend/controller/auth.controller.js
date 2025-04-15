@@ -8,6 +8,7 @@ const login = async(req,res)=>{
     if(!isUser){
       res.status(404).json({message:"user not found"})
     }
+    
     const isMatched = password==isUser.password;
 
     if(!isMatched){
