@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
   email:{
     type:String,
     required:true,
-    trim:true
+    trim:true,
+    unique:true,
   },
   password:{
     type:String,
@@ -19,7 +20,12 @@ const userSchema = new mongoose.Schema({
     type:String,
   },
   dob:{
-    type:number
+    type:String
+  },
+  role:{
+    type:String,
+    enum:["user","admin"],
+    default:"user"
   },
   favourites:[
     {
@@ -27,10 +33,15 @@ const userSchema = new mongoose.Schema({
       ref:"Product"
     }
   ],
-  addresses:[
+  cart:[
     {
       type:mongoose.Schema.Types.ObjectId,
-      ref:"Address"
+      ref:"Product"
+    }
+  ],
+  addresses:[
+    {
+      type:String
     }
   ]
 },{
