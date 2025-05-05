@@ -43,6 +43,10 @@ const productSchema = new mongoose.Schema({
   wearType:{
     type:String,
     enum:["bottom","top"]
+  },
+  createdBy:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
   }
 },
 {timestamps:true}
