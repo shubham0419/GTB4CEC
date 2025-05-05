@@ -17,7 +17,7 @@ const login = async(req,res)=>{
       res.status(403).json({message:"Invalid email or Password"});
     }
     
-    const token = JWT.sign({name:user.name,email:user.email,id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"});
+    const token = JWT.sign({name:user.name,email:user.email,id:user._id,role:user.role},process.env.JWT_SECRET,{expiresIn:"7d"});
     res.status(200).json({message:"user logged in susscessfully",user,token});
   } catch (error) {
     res.status(400).json({message:error.message});
@@ -37,7 +37,7 @@ const signup = async(req,res)=>{
       role
     })
 
-    const token = JWT.sign({name:user.name,email:user.email,id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"});
+    const token = JWT.sign({name:user.name,email:user.email,id:user._id,role:user.role},process.env.JWT_SECRET,{expiresIn:"7d"});
     res.status(200).json({message:"user created susscessfully",user,token});
   } catch (error) {
     res.status(400).json({message:error.message})

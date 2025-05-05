@@ -8,14 +8,26 @@ const isloggedIn = async (req,res,next)=>{
     const verified = JWT.verify(token,process.env.JWT_SECRET);
 
     if(!verified){
-      res.status(402).json({message:"user not authenticated"})
+      return res.status(402).json({message:"user not authenticated"})
     }
 
     req.user = verified;
-    
+
     next();
   } catch (error) {
     res.status(402).json({message:error.message})
   }
 }
-module.exports = {isloggedIn}
+
+const isAdmin = async (req,res,next)=>{
+  try {
+    const role = req.user.role;
+    if(role != "admin"){
+      return res.status(402).json({message:"user not verified"});
+    }
+    next();
+  } catch (error) {
+    res.status(402).json({message:error.message})
+  }
+}
+module.exports = {isloggedIn,isAdmin}

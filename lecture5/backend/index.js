@@ -13,10 +13,12 @@ app.get("/", (req, res) => {
 // routers
 const authRoutes = require("./routes/auth.route");
 const userRoutes = require("./routes/user.route");
+const productRoutes = require("./routes/product.route");
 const { isloggedIn } = require("./middleware");
 
 app.use("/auth",authRoutes);
 app.use("/user",isloggedIn,userRoutes);
+app.use("/product",isloggedIn,productRoutes);
 
 app.listen(PORT, () => {
   connectDb()
