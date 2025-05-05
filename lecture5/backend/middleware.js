@@ -1,4 +1,5 @@
-const JWT = require("jsonwebtoken")
+const JWT = require("jsonwebtoken");
+
 const isloggedIn = async (req,res,next)=>{
   try {
     const header = req.headers.authorization;
@@ -9,7 +10,9 @@ const isloggedIn = async (req,res,next)=>{
     if(!verified){
       res.status(402).json({message:"user not authenticated"})
     }
+
     req.user = verified;
+    
     next();
   } catch (error) {
     res.status(402).json({message:error.message})
