@@ -10,6 +10,7 @@ import CartPage from "./pages/CartPage"
 import WishlistPage from "./pages/WishListPage"
 import LoginPage from "./pages/auth/LoginPage"
 import SignupPage from "./pages/auth/SignupPage"
+import AdminSignupPage from "./pages/auth/AdminSignup"
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/admin/signup" element={<AdminSignupPage />} />
 
           {/* Routes with Navbar */}
           <Route

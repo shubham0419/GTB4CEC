@@ -39,14 +39,14 @@ export default function Home() {
               <div className="loading-spinner"></div>
               <p>Loading products...</p>
             </div>
-          ) : allProducts.length === 0 ? (
+          ) : allProducts?.length === 0 ? (
             <div className="empty-state">
               <h2>No products found</h2>
               <p>Check back soon for our latest products!</p>
             </div>
           ) : (
             <div className="product-grid">
-              {allProducts.map((product) => (
+              {allProducts?.map((product) => (
                 <div className="product-card" key={product._id}>
                   <div className="product-image">
                     <img 

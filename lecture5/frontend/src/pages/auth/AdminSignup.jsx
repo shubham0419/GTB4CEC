@@ -6,12 +6,13 @@ import { Eye, EyeOff, UserPlus } from "lucide-react"
 import "./auth.css"
 import { registerUser } from "../../services/api/auth"
 
-export default function SignupPage() {
+export default function AdminSignupPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
+    role:"admin"
   })
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
@@ -54,8 +55,8 @@ export default function SignupPage() {
       <div className="auth-container">
         <div className="auth-form-container">
           <div className="auth-header">
-            <h1>Create Account</h1>
-            <p>Join SportHub and get access to exclusive deals</p>
+            <h1>Create Admin Account</h1>
+            <p>Join SportHub as admin and get access to exclusive functionalities</p>
           </div>
 
           {error && <div className="auth-error">{error}</div>}

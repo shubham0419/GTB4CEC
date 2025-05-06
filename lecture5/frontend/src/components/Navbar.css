@@ -9,7 +9,7 @@
 
 /* Navbar Container */
 .navbar {
-  background-color: #70e000;
+  background-color: #3c096c;
   color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -130,7 +130,7 @@
 
 .dropdown-item:hover {
   background-color: #f0f9e8;
-  color: #70e000;
+  color: #3c096c;
   transform: translateX(5px);
 }
 
@@ -343,8 +343,8 @@
 
 .mobile-nav-link:hover {
   background-color: #f0f9e8;
-  color: #70e000;
-  border-left-color: #70e000;
+  color: #3c096c;
+  border-left-color: #3c096c;
 }
 
 .mobile-nav-actions {
@@ -370,7 +370,7 @@
 
 .mobile-search-input:focus {
   outline: none;
-  border-color: #70e000;
+  border-color: #3c096c;
   box-shadow: 0 0 0 2px rgba(112, 224, 0, 0.2);
 }
 
@@ -448,7 +448,7 @@
 }
 
 .mobile-auth-button.signup {
-  background-color: #70e000;
+  background-color: #3c096c;
   color: white;
 }
 

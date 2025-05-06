@@ -18,7 +18,6 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
-
     let user = await loginUser(email,password);
     navigate("/");
     setIsSubmitting(true);
