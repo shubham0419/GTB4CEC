@@ -88,6 +88,14 @@ const getAllProducts = async(req,res)=>{
         }
       })
     }
+
+    if(pipline.length==0){
+      pipline.push({
+        $sort:{
+          createdAt:-1
+        }
+      })
+    }
     
     const products = await Product.aggregate(pipline);
     res.status(200).json({message:"product found successfully",products})
