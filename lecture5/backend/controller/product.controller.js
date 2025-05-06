@@ -31,7 +31,7 @@ const deleteProduct = async(req,res)=>{
 
 const getAllProducts = async(req,res)=>{
   try {
-    const {name,sortby,sortOrder} = req.query;
+    const {name,sortby,sortOrder,color,size,gender,productType,wearType} = req.query;
 
     const pipline = []
     if(name){
@@ -45,14 +45,51 @@ const getAllProducts = async(req,res)=>{
       pipline.push(nameQuery);
     }
     if(sortby){
-      const sortquery = {
-        $sort:{
-          sortby: sortOrder=="asc"? 1 : -1, // sortby is field(price, name ) and 1 stands for ascending order ,-1 stand for descending order
-        }  
-      }
-      pipline.push(sortquery);
+      if(sortby=="price"){
+        const sortquery = {
+          $sort:{
+            price: sortOrder=="asc"? 1 : -1, // sortby is field(price, name ) and 1 stands for ascending order ,-1 stand for descending order
+          }  
+        }
+      pipline.push(sortquery);}
     }
-    const products = await Product.aggregate(pipline).exec();
+    if(color){
+      pipline.push({
+        $match: {
+          colors: color,
+        },
+      });
+    }
+    if(size){
+      pipline.push({
+        $match:{
+          sizes:size
+        }
+      })
+    }
+    if(gender){
+      pipline.push({
+        $match:{
+          gender:gender
+        }
+      })
+    }
+    if(productType){
+      pipline.push({
+        $match:{
+          productType:productType
+        }
+      })
+    }
+    if(wearType){
+      pipline.push({
+        $match:{
+          wearType:wearType
+        }
+      })
+    }
+    
+    const products = await Product.aggregate(pipline);
     res.status(200).json({message:"product found successfully",products})
   } catch (error) {
     res.status(402).json({message:error.message});
