@@ -89,14 +89,6 @@ const getAllProducts = async(req,res)=>{
       })
     }
 
-    if(pipline.length==0){
-      pipline.push({
-        $sort:{
-          createdAt:-1
-        }
-      })
-    }
-
     pipline.push({
       $lookup: {
         from: 'categories', // The collection name (usually lowercase and plural of the model name)

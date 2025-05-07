@@ -50,14 +50,14 @@ export default function Home() {
                 <div className="product-card" key={product._id}>
                   <div className="product-image">
                     <img 
-                      src={product.image || "/api/placeholder/250/220"} 
+                      src={product.image || "https://rakanonline.com/wp-content/uploads/2022/08/default-product-image.png"} 
                       alt={product.name} 
                     />
                     {/* {product.isNew && <span className="product-badge">New</span>} */}
                     {product?.sale?.live && <span className="sale-badge">Sale</span>}
                   </div>
                   <div className="product-info">
-                    <span className="product-category">{product?.category}</span>
+                    <span className="product-category">{product?.category?.name}</span>
                     <h3 className="product-name">{product?.name}</h3>
                     <div className="price-container">
                       {product.sale.live ? (
@@ -66,7 +66,7 @@ export default function Home() {
                           <span className="sale-price">${(product?.price - (product?.sale?.discountPercentage?(product.sale.discountPercentage*product.price/100):product.sale.discountAmount)).toFixed(2)}</span>
                         </>
                       ) : (
-                        <span className="product-price">${product.price.toFixed(2)}</span>
+                        <span className="product-price">${product?.price.toFixed(2)}</span>
                       )}
                     </div>
                     <button className="add-to-cart">
