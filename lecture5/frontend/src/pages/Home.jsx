@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import "./pages.css";
 import { getAllProducts } from "../services/api/product";
+import { useDispatch, useSelector } from "react-redux";
+import { setProducts } from "../redux/features/productSlice";
 
 export default function Home() {
-  const [allProducts, setAllProducts] = useState([]);
+  const allProducts = useSelector(state=>state.products.value)
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   const fetchProduct = async() => {
     try {
       let products = await getAllProducts();
-      setAllProducts(products);
+      dispatch(setProducts(products));
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
