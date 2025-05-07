@@ -14,7 +14,7 @@ export const loginUser = async (email, password) => {
     Cookies.set("token",res.data.token,{expires:7});
     return res.data.user;
   } catch (error) {
-    console.log(error);
+    return error.message;
   }
 }
 
@@ -24,7 +24,7 @@ export const registerUser = async (userData) => {
     Cookies.set("token",res.data.token,{expires:7});
     return res.data.user;
   } catch (error) {
-    console.log(error);
+    return error.message;
   }
 }
 
@@ -34,5 +34,15 @@ export const logoutUser = async () => {
 }
 
 export const getCurrentUser = async () => {
-  
+  try {
+    const token = Cookies.get("token");
+    let res = await axios.get(BaseUrl+"/user",{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    })
+    return res.data.user;
+  } catch (error) {
+    console.log(error);
+  }
 }

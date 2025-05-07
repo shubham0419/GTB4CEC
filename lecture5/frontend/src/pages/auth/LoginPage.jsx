@@ -6,6 +6,8 @@ import { Eye, EyeOff, LogIn } from "lucide-react"
 import "./auth.css"
 import axios from "axios"
 import { loginUser } from "../../services/api/auth"
+import { useDispatch } from "react-redux"
+import { setUserData } from "../../redux/features/userSlice"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -14,13 +16,19 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
     let user = await loginUser(email,password);
-    navigate("/");
-    setIsSubmitting(true);
+    if(user._id){
+      dispatch(setUserData(user));
+      navigate("/");
+      setIsSubmitting(true);
+    }else{
+      setError("Invalid email or password");
+    }
   }
 
   return (

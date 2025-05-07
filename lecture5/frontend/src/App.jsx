@@ -11,9 +11,24 @@ import WishlistPage from "./pages/WishListPage"
 import LoginPage from "./pages/auth/LoginPage"
 import SignupPage from "./pages/auth/SignupPage"
 import AdminSignupPage from "./pages/auth/AdminSignup"
+import { useDispatch } from "react-redux"
+import { getCurrentUser } from "./services/api/auth"
+import { setUserData } from "./redux/features/userSlice"
+import { useEffect } from "react"
 
 
 function App() {
+  const dispatch = useDispatch();
+
+  const getUserData = async () =>{
+    let user = await getCurrentUser();
+    dispatch(setUserData(user));
+  }
+
+  useEffect(()=>{
+    getUserData();
+  },[])
+
   return (
     <BrowserRouter>
         <Routes>

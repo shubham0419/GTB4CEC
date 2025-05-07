@@ -1,10 +1,12 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Eye, EyeOff, UserPlus } from "lucide-react"
-import "./auth.css"
-import { registerUser } from "../../services/api/auth"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff, UserPlus } from "lucide-react";
+import "./auth.css";
+import { registerUser } from "../../services/api/auth";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../redux/features/userSlice";
 
 export default function AdminSignupPage() {
   const [formData, setFormData] = useState({
@@ -12,43 +14,48 @@ export default function AdminSignupPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    role:"admin"
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState("")
+    role: "admin",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]:value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const validateForm = () => {
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
-      return false
+      setError("Passwords do not match");
+      return false;
     }
     if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters")
-      return false
+      setError("Password must be at least 6 characters");
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
     if (!validateForm()) return;
 
     let user = await registerUser(formData);
-    navigate("/");
-    setIsSubmitting(true);
-  }
+    if (user._id) {
+      dispatch(setUserData(user));
+      navigate("/");
+      setIsSubmitting(true);
+    } else {
+      setError("Invalid email or password");
+    }
+  };
 
   return (
     <div className="auth-page">
@@ -56,7 +63,9 @@ export default function AdminSignupPage() {
         <div className="auth-form-container">
           <div className="auth-header">
             <h1>Create Admin Account</h1>
-            <p>Join SportHub as admin and get access to exclusive functionalities</p>
+            <p>
+              Join SportHub as admin and get access to exclusive functionalities
+            </p>
           </div>
 
           {error && <div className="auth-error">{error}</div>}
@@ -143,7 +152,11 @@ export default function AdminSignupPage() {
               </label>
             </div>
 
-            <button type="submit" className="auth-button" disabled={isSubmitting}>
+            <button
+              type="submit"
+              className="auth-button"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <span className="loading-spinner"></span>
               ) : (
@@ -170,11 +183,14 @@ export default function AdminSignupPage() {
             <h2>
               SPORT<span className="logo-accent">HUB</span>
             </h2>
-            <p className="auth-quote">"The more difficult the victory, the greater the happiness in winning."</p>
+            <p className="auth-quote">
+              "The more difficult the victory, the greater the happiness in
+              winning."
+            </p>
             <p className="auth-quote-author">— Pelé</p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
