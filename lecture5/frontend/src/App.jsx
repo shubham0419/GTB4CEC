@@ -12,6 +12,7 @@ import LoginPage from "./pages/auth/LoginPage"
 import SignupPage from "./pages/auth/SignupPage"
 import AdminSignupPage from "./pages/auth/AdminSignup"
 
+
 function App() {
   return (
     <BrowserRouter>
