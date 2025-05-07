@@ -20,4 +20,75 @@ const updateUser = async (req,res)=>{
   }
 }
 
-module.exports = {getUser,updateUser}
+const toggleCart = async (req,res)=>{
+  try {
+    const {id} = req.params;
+
+    const user = await Users.findById(req.user.id);
+
+    const isProduct = user.cart.find(prodId=>prodId==id);
+
+    if(isProduct){
+      // const newCart = user.cart.filter(prodId=>{
+      //   return prodId != id;
+      // })
+
+      // await Users.findByIdAndUpdate(req.user.id,{cart:newCart})
+
+      await Users.findByIdAndUpdate(req.user.id,{
+        $pull:{
+          cart:id
+        }
+      })
+
+    }else{
+      await Users.findByIdAndUpdate(req.user.id,{
+        $push:{
+          cart:id
+        }
+      })
+    }
+
+    res.status(200).json({message:"cart updated successfuly"})
+  } catch (error) {
+    res.status(400).json({message:error.message})
+  }
+}
+
+const toggleFavourites = async (req,res)=>{
+  try {
+    const {id} = req.params;
+
+    const user = await Users.findById(req.user.id);
+
+    const isProduct = user.favourites.find(prodId=>prodId==id);
+
+    if(isProduct){
+      // const newCart = user.favourites.filter(prodId=>{
+      //   return prodId != id;
+      // })
+
+      // await Users.findByIdAndUpdate(req.user.id,{favourites:newCart})
+
+      await Users.findByIdAndUpdate(req.user.id,{
+        $pull:{
+          favourites:id
+        }
+      })
+
+    }else{
+      await Users.findByIdAndUpdate(req.user.id,{
+        $push:{
+          favourites:id
+        }
+      })
+    }
+
+    res.status(200).json({message:"favourites updated successfuly"})
+  } catch (error) {
+    res.status(400).json({message:error.message})
+  }
+}
+
+
+module.exports = {getUser,updateUser,toggleCart,toggleFavourites}
