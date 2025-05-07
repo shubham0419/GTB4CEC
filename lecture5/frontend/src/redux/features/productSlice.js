@@ -19,15 +19,15 @@ export const productSlice = createSlice({
     }],
   },
   reducers: {
-    setUserData: (state, action) => {
+    setProducts: (state, action) => {
       state.value = action.payload;
     },
-    resetUserData: (state) => {
-      state.value = {};
+    resetProducts: (state) => {
+      state.value = [];
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUserData, resetUserData } = productSlice.actions;
+export const { setProducts, resetProducts } = productSlice.actions;
 export default productSlice.reducer;
