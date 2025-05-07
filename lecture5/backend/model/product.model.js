@@ -48,7 +48,19 @@ const productSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     required:true
-  }
+  },
+  sale:{
+    live:{
+      type:Boolean,
+      default:false
+    },
+    discountPercentage:{
+      type:Number
+    },
+    discoutnAmount:{
+      type:Number
+    }
+  },
 },
 {timestamps:true}
 );

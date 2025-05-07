@@ -96,6 +96,22 @@ const getAllProducts = async(req,res)=>{
         }
       })
     }
+
+    pipline.push({
+      $lookup: {
+        from: 'categories', // The collection name (usually lowercase and plural of the model name)
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category'
+      }
+    });
+    
+    pipline.push({
+      $unwind: {
+        path: '$category',
+        preserveNullAndEmptyArrays: true 
+      }
+    });
     
     const products = await Product.aggregate(pipline);
     res.status(200).json({message:"product found successfully",products})

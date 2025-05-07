@@ -54,16 +54,16 @@ export default function Home() {
                       alt={product.name} 
                     />
                     {/* {product.isNew && <span className="product-badge">New</span>} */}
-                    {product.sale.live && <span className="sale-badge">Sale</span>}
+                    {product?.sale?.live && <span className="sale-badge">Sale</span>}
                   </div>
                   <div className="product-info">
-                    <span className="product-category">{product.category}</span>
-                    <h3 className="product-name">{product.name}</h3>
+                    <span className="product-category">{product?.category}</span>
+                    <h3 className="product-name">{product?.name}</h3>
                     <div className="price-container">
                       {product.sale.live ? (
                         <>
-                          <span className="original-price">${product.price.toFixed(2)}</span>
-                          <span className="sale-price">${(product.price - (product.sale.discountPercentage?(product.sale.discountPercentag*product.pricee/100):product.sale.discountAmount)).toFixed(2)}</span>
+                          <span className="original-price">${product?.price.toFixed(2)}</span>
+                          <span className="sale-price">${(product?.price - (product?.sale?.discountPercentage?(product.sale.discountPercentage*product.price/100):product.sale.discountAmount)).toFixed(2)}</span>
                         </>
                       ) : (
                         <span className="product-price">${product.price.toFixed(2)}</span>
