@@ -21,7 +21,7 @@ const { isloggedIn } = require("./middleware");
 
 app.use("/auth",authRoutes);
 app.use("/user",isloggedIn,userRoutes);
-app.use("/product",isloggedIn,productRoutes);
+app.use("/product",productRoutes);
 
 app.listen(PORT, () => {
   connectDb()
