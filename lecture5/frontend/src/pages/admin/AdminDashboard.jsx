@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { Edit, Trash2, Plus, Tag, Package } from "lucide-react"
+import { Edit, Trash2, Plus, Tag, Package, Component } from "lucide-react"
 import "../pages.css"
 import "./admin.css"
 import { useSelector } from "react-redux"
@@ -242,6 +242,13 @@ export default function AdminDashboard() {
           >
             <Plus size={18} />
             {editingProduct ? "Edit Product" : "Add Product"}
+          </button>
+          <button
+            className={`admin-tab ${activeTab === "category" ? "active" : ""}`}
+            onClick={() => setActiveTab("category")}
+          >
+            <Component size={18} />
+              Category
           </button>
         </div>
 
@@ -575,6 +582,42 @@ export default function AdminDashboard() {
               <div className="form-actions">
                 <button type="submit" className="cta-button">
                   {editingProduct ? "Update Product" : "Add Product"}
+                </button>
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={() => {
+                    setActiveTab("products")
+                    setEditingProduct(null)
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {activeTab === "category" && (
+          <div className="admin-content">
+            <form className="admin-form">
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="name">Category Name*</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    className="form-input"
+                  />
+                </div>
+              </div>
+              <div className="form-actions">
+                <button type="submit" className="cta-button">
+                  Add Caategory
                 </button>
                 <button
                   type="button"
