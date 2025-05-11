@@ -109,7 +109,7 @@ const getAllProducts = async(req,res)=>{
     const products = await Product.aggregate(pipline);
     res.status(200).json({message:"product found successfully",products})
   } catch (error) {
-    res.status(402).json({message:error.message});
+    res.status(401).json({message:error.message});
   }
 }
 
@@ -139,8 +139,17 @@ const createCategory = async(req,res)=>{
     const newcategory = await Category.create({name});
     res.status(200).json({message:"category created successfully",category:newcategory})
   } catch (error) {
-    
+    res.status(402).json({message:error.message});
   }
 }
 
-module.exports = {createProduct,updateProduct,deleteProduct,getAllProducts,getProductsByCategory,getProductById,createCategory};
+const getAllCategories = async (req,res)=>{
+  try {
+    const categories = await Category.find();
+    res.status(200).json({message:"categories fetched successfully",categories})
+  } catch (error) {
+    res.status(401).json({message:error.message});
+  }
+}
+
+module.exports = {createProduct,updateProduct,deleteProduct,getAllProducts,getProductsByCategory,getProductById,createCategory,getAllCategories};

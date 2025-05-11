@@ -37,7 +37,7 @@ export const getAllProducts = async (
       params.productType = productType;
     }
 
-    const res = await axios.get(BaseUrl + "/product", params);
+    const res = await axios.get(BaseUrl + "/product/all", params);
     return res.data.products;
   } catch (error) {
     return [];
@@ -66,6 +66,15 @@ export const createCategory = async (categoryName)=>{
       }
     });
     return res.data.category.name;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const getAllCategories = async ()=>{
+  try {
+    let res = await axios.get(BaseUrl+"/product/categories");
+    return res.data.categories;
   } catch (error) {
     console.log(error);
   }

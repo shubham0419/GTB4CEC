@@ -4,7 +4,7 @@ import { Edit, Trash2, Plus, Tag, Package, Component } from "lucide-react"
 import "../pages.css"
 import "./admin.css"
 import { useSelector } from "react-redux"
-import { createCategory, getAllProducts } from "../../services/api/product"
+import { createCategory, getAllCategories, getAllProducts } from "../../services/api/product"
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("products")
@@ -69,6 +69,15 @@ export default function AdminDashboard() {
 
     fetchProducts()
   }, [user, navigate])
+
+  const allCategories = async ()=>{
+    let allCategories = await getAllCategories();
+    setCategories(allCategories);
+  }
+
+  useEffect(()=>{
+    allCategories();
+  },[])
 
   const fetchProducts = async () => {
     try {
@@ -209,6 +218,10 @@ export default function AdminDashboard() {
   const handleCategorySubmit = async (e)=>{
     e.preventDefault();
     const name = await createCategory(category);
+    if(name){
+      setActiveTab("addProduct");
+      setCategory("");
+    }
   }
 
   return (
@@ -408,7 +421,7 @@ export default function AdminDashboard() {
                     className="form-input"
                   >
                     <option value="">Select Category</option>
-                    {categories.map((category) => (
+                    {categories?.map((category) => (
                       <option key={category._id} value={category._id}>
                         {category.name}
                       </option>
