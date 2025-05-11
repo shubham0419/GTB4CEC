@@ -15,7 +15,7 @@ const Home = () => {
   // }
   const getAllTodos = async()=>{
     try {
-      const res = await axios.get("http://localhost:5000/alltodos");
+      const res = await axios.get("http://localhost:4000/alltodos");
       console.log(res.data.TODOS);
       // setAllTodos(res.data.TODOS);
       dispatch(updateTodo(res.data.TODOS));
@@ -34,7 +34,7 @@ const Home = () => {
       title,
       description
     }
-    const res = await axios.post("http://localhost:5000/create",payload);
+    const res = await axios.post("http://localhost:4000/create",payload);
     // setAllTodos(res.data.TODOS);
     dispatch(updateTodo(res.data.TODOS));
   }

@@ -1,106 +1,264 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { Filter, ChevronDown, ChevronUp } from "lucide-react"
 import "./pages.css"
+import { getAllProducts } from "../services/api/product"
 
 export default function CategoriesPage() {
   const categories = [
-    { id: "running", name: "Running", image: "/api/placeholder/800/300" },
-    { id: "basketball", name: "Basketball", image: "/api/placeholder/800/300" },
-    { id: "football", name: "Football", image: "/api/placeholder/800/300" },
-    { id: "tennis", name: "Tennis", image: "/api/placeholder/800/300" },
-    { id: "golf", name: "Golf", image: "/api/placeholder/800/300" },
+    {
+      id: "running",
+      name: "Running",
+      image:
+        "https://images.unsplash.com/photo-1594882645126-14020914d58d?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      id: "basketball",
+      name: "Basketball",
+      image:
+        "https://images.unsplash.com/photo-1519861531473-9200262188bf?q=80&w=2500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      id: "football",
+      name: "Football",
+      image:
+        "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?q=80&w=3149&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+    {
+      id: "tennis",
+      name: "Tennis",
+      image:
+        "https://images.unsplash.com/photo-1595435742656-5272d0b3fa82?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHRlbm5pc3xlbnwwfHwwfHx8MA%3D%3D",
+    },
+    {
+      id: "golf",
+      name: "Golf",
+      image:
+        "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
   ]
 
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [showFilters, setShowFilters] = useState(false)
+  const [filters, setFilters] = useState({
+    priceRange: "all",
+    sortBy: "featured",
+  })
 
-  // Sample products for the selected category
-  const categoryProducts = {
-    running: [
-      { id: 101, name: "Pro Runner Shoes", price: 129.99, image: "/api/placeholder/300/300" },
-      { id: 102, name: "Performance Socks", price: 14.99, image: "/api/placeholder/300/300" },
-      { id: 103, name: "Running Shorts", price: 39.99, image: "/api/placeholder/300/300" },
-      { id: 104, name: "Hydration Belt", price: 24.99, image: "/api/placeholder/300/300" },
-      { id: 105, name: "Fitness Tracker", price: 99.99, image: "/api/placeholder/300/300" },
-      { id: 106, name: "Compression Sleeve", price: 19.99, image: "/api/placeholder/300/300" },
-    ],
-    basketball: [
-      { id: 201, name: "Basketball Pro Jersey", price: 89.99, image: "/api/placeholder/300/300" },
-      { id: 202, name: "Indoor Basketball", price: 59.99, image: "/api/placeholder/300/300" },
-      { id: 203, name: "Basketball Shoes", price: 149.99, image: "/api/placeholder/300/300" },
-      { id: 204, name: "Arm Sleeve", price: 19.99, image: "/api/placeholder/300/300" },
-      { id: 205, name: "Basketball Shorts", price: 34.99, image: "/api/placeholder/300/300" },
-      { id: 206, name: "Training Vest", price: 29.99, image: "/api/placeholder/300/300" },
-    ],
-    football: [
-      { id: 301, name: "Football Training Kit", price: 149.99, image: "/api/placeholder/300/300" },
-      { id: 302, name: "Match Ball", price: 99.99, image: "/api/placeholder/300/300" },
-      { id: 303, name: "Football Boots", price: 189.99, image: "/api/placeholder/300/300" },
-      { id: 304, name: "Shin Guards", price: 24.99, image: "/api/placeholder/300/300" },
-      { id: 305, name: "Team Jersey", price: 79.99, image: "/api/placeholder/300/300" },
-      { id: 306, name: "Goal Keeper Gloves", price: 49.99, image: "/api/placeholder/300/300" },
-    ],
-    tennis: [
-      { id: 401, name: "Tennis Racket Elite", price: 199.99, image: "/api/placeholder/300/300" },
-      { id: 402, name: "Tennis Balls (3-pack)", price: 9.99, image: "/api/placeholder/300/300" },
-      { id: 403, name: "Court Shoes", price: 119.99, image: "/api/placeholder/300/300" },
-      { id: 404, name: "Tennis Shorts", price: 44.99, image: "/api/placeholder/300/300" },
-      { id: 405, name: "Wristbands", price: 14.99, image: "/api/placeholder/300/300" },
-      { id: 406, name: "Tennis Bag", price: 79.99, image: "/api/placeholder/300/300" },
-    ],
-    golf: [
-      { id: 501, name: "Golf Clubs Set", price: 899.99, image: "/api/placeholder/300/300" },
-      { id: 502, name: "Golf Balls (12-pack)", price: 39.99, image: "/api/placeholder/300/300" },
-      { id: 503, name: "Golf Shoes", price: 159.99, image: "/api/placeholder/300/300" },
-      { id: 504, name: "Golf Gloves", price: 24.99, image: "/api/placeholder/300/300" },
-      { id: 505, name: "Golf Bag", price: 129.99, image: "/api/placeholder/300/300" },
-      { id: 506, name: "Golf Polo Shirt", price: 49.99, image: "/api/placeholder/300/300" },
-    ],
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchProductsByCategory(selectedCategory)
+    }
+  }, [selectedCategory, filters])
+
+  const fetchProductsByCategory = async (categoryId) => {
+    setLoading(true)
+    try {
+      // In a real app, you would filter by category ID
+      // For now, we'll just fetch all products and filter on the client
+      const allProducts = await getAllProducts()
+
+      // Simulate filtering by category (replace with actual filtering logic)
+      let filteredProducts = allProducts.filter((product) => product.category?.name?.toLowerCase() === categoryId)
+
+      // Apply price filter
+      if (filters.priceRange !== "all") {
+        filteredProducts = applyPriceFilter(filteredProducts, filters.priceRange)
+      }
+
+      // Apply sorting
+      filteredProducts = applySorting(filteredProducts, filters.sortBy)
+
+      setProducts(filteredProducts)
+    } catch (error) {
+      console.error("Error fetching products:", error)
+      setProducts([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const applyPriceFilter = (products, range) => {
+    switch (range) {
+      case "under50":
+        return products.filter((p) => p.price < 50)
+      case "50to100":
+        return products.filter((p) => p.price >= 50 && p.price <= 100)
+      case "100to200":
+        return products.filter((p) => p.price > 100 && p.price <= 200)
+      case "over200":
+        return products.filter((p) => p.price > 200)
+      default:
+        return products
+    }
+  }
+
+  const applySorting = (products, sortBy) => {
+    switch (sortBy) {
+      case "priceLow":
+        return [...products].sort((a, b) => a.price - b.price)
+      case "priceHigh":
+        return [...products].sort((a, b) => b.price - a.price)
+      case "newest":
+        return [...products].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      default:
+        // Featured - no specific sorting
+        return products
+    }
+  }
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const toggleFilters = () => {
+    setShowFilters(!showFilters)
   }
 
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Categories</h1>
+        <h1>Shop by Category</h1>
       </div>
 
       <div className="container">
-        <div className="categories-list">
+        <div className="categories-showcase">
           {categories.map((category) => (
             <div
               key={category.id}
-              className={`category-banner ${selectedCategory === category.id ? "selected" : ""}`}
+              className={`category-card-large ${selectedCategory === category.id ? "selected" : ""}`}
               onClick={() => setSelectedCategory(category.id)}
             >
-              <img src={category.image} alt={category.name} />
-              <h2>{category.name}</h2>
+              <div className="category-image-container">
+                <img src={category.image || "/placeholder.svg"} alt={category.name} />
+                <div className="category-overlay">
+                  <h3>{category.name}</h3>
+                  <span className="category-cta">Browse Products</span>
+                </div>
+              </div>
             </div>
           ))}
         </div>
 
         {selectedCategory && (
-          <div className="category-products">
-            <h2>{categories.find((c) => c.id === selectedCategory).name} Products</h2>
-            <div className="product-grid">
-              {categoryProducts[selectedCategory].map((product) => (
-                <div className="product-card" key={product.id}>
-                  <div className="product-image">
-                    <img src={product.image} alt={product.name} />
-                  </div>
-                  <div className="product-info">
-                    <h3 className="product-name">{product.name}</h3>
-                    <span className="product-price">${product.price}</span>
+          <div className="category-products-section">
+            <div className="category-products-header">
+              <h2>{categories.find((c) => c.id === selectedCategory)?.name} Products</h2>
+              <button className="filter-toggle-btn" onClick={toggleFilters}>
+                <Filter size={18} />
+                <span>Filters</span>
+                {showFilters ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              </button>
+            </div>
+
+            {showFilters && (
+              <div className="product-filters">
+                <div className="filter-group">
+                  <label htmlFor="priceRange">Price Range:</label>
+                  <select
+                    id="priceRange"
+                    name="priceRange"
+                    value={filters.priceRange}
+                    onChange={handleFilterChange}
+                    className="filter-select"
+                  >
+                    <option value="all">All Prices</option>
+                    <option value="under50">Under $50</option>
+                    <option value="50to100">$50 - $100</option>
+                    <option value="100to200">$100 - $200</option>
+                    <option value="over200">Over $200</option>
+                  </select>
+                </div>
+
+                <div className="filter-group">
+                  <label htmlFor="sortBy">Sort By:</label>
+                  <select
+                    id="sortBy"
+                    name="sortBy"
+                    value={filters.sortBy}
+                    onChange={handleFilterChange}
+                    className="filter-select"
+                  >
+                    <option value="featured">Featured</option>
+                    <option value="priceLow">Price: Low to High</option>
+                    <option value="priceHigh">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {loading ? (
+              <div className="loading-container">
+                <div className="loading-spinner"></div>
+                <p>Loading products...</p>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="empty-state">
+                <h3>No products found</h3>
+                <p>We couldn't find any products in this category matching your filters.</p>
+                <button className="cta-button" onClick={() => setFilters({ priceRange: "all", sortBy: "featured" })}>
+                  Clear Filters
+                </button>
+              </div>
+            ) : (
+              <div className="product-grid">
+                {products.map((product) => (
+                  <div className="product-card" key={product._id}>
+                    <Link to={`/product/${product._id}`} className="product-link">
+                      <div className="product-image">
+                        <img
+                          src={
+                            product.image ||
+                            "https://rakanonline.com/wp-content/uploads/2022/08/default-product-image.png"
+                          }
+                          alt={product.name}
+                        />
+                        {product?.sale?.live && <span className="sale-badge">Sale</span>}
+                      </div>
+                      <div className="product-info">
+                        <span className="product-category">{product?.category?.name}</span>
+                        <h3 className="product-name">{product?.name}</h3>
+                        <div className="price-container">
+                          {product.sale?.live ? (
+                            <>
+                              <span className="original-price">${product?.price.toFixed(2)}</span>
+                              <span className="sale-price">
+                                $
+                                {(
+                                  product?.price -
+                                  (product?.sale?.discountPercentage
+                                    ? (product.sale.discountPercentage * product.price) / 100
+                                    : product.sale.discountAmount)
+                                ).toFixed(2)}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="product-price">${product?.price.toFixed(2)}</span>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
                     <button className="add-to-cart">Add to Cart</button>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
         {!selectedCategory && (
           <div className="category-prompt">
             <h2>Select a category to view products</h2>
+            <p>Browse our collection by selecting one of the categories above</p>
           </div>
         )}
       </div>

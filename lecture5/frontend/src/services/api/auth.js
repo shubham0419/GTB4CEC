@@ -1,7 +1,7 @@
 import axios from "axios"
 import Cookies from "js-cookie"
 
-const BaseUrl = "http://localhost:5000"
+const BaseUrl = "http://localhost:4000"
 
 export const loginUser = async (email, password) => {
   try {

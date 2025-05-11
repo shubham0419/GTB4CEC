@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BaseUrl = "http://localhost:5000";
+const BaseUrl = "http://localhost:4000";
 
 export const getAllProducts = async (
   name,
@@ -43,6 +43,16 @@ export const getAllProducts = async (
     return [];
   }
 };
+
+export const getProductById = async (productId) => {
+  try {
+    const res = await axios.get(`${BaseUrl}/product/${productId}`)
+    return res.data.product
+  } catch (error) {
+    console.error("Error fetching product:", error)
+    return null
+  }
+}
 
 export const getProductsByCategory = async (category) => {};
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react"
 import "./pages.css"
 
 export default function ContactPage() {
@@ -10,36 +11,85 @@ export default function ContactPage() {
     subject: "",
     message: "",
   })
-
-  const [formSubmitted, setFormSubmitted] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }))
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }))
+    }
+  }
+
+  const validateForm = () => {
+    const newErrors = {}
+    if (!formData.name.trim()) newErrors.name = "Name is required"
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid"
+    }
+    if (!formData.subject.trim()) newErrors.subject = "Subject is required"
+    if (!formData.message.trim()) newErrors.message = "Message is required"
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Here you would typically send the form data to a server
-    console.log("Form submitted:", formData)
-    setFormSubmitted(true)
-
-    // Reset form after submission
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    })
-
-    // Reset submission status after 5 seconds
-    setTimeout(() => {
-      setFormSubmitted(false)
-    }, 5000)
+    if (validateForm()) {
+      setIsSubmitting(true)
+      // Simulate API call
+      setTimeout(() => {
+        setIsSubmitting(false)
+        setIsSubmitted(true)
+        // Reset form after submission
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        })
+        // Reset submission status after 5 seconds
+        setTimeout(() => {
+          setIsSubmitted(false)
+        }, 5000)
+      }, 1500)
+    }
   }
+
+  const contactInfo = [
+    {
+      icon: <MapPin size={24} />,
+      title: "Our Location",
+      details: ["123 Sports Avenue", "Athletic District", "New York, NY 10001"],
+    },
+    {
+      icon: <Phone size={24} />,
+      title: "Phone Number",
+      details: ["+1 (555) 123-4567", "+1 (555) 987-6543"],
+    },
+    {
+      icon: <Mail size={24} />,
+      title: "Email Address",
+      details: ["support@sportsequipment.com", "sales@sportsequipment.com"],
+    },
+    {
+      icon: <Clock size={24} />,
+      title: "Working Hours",
+      details: ["Monday - Friday: 9AM - 8PM", "Saturday - Sunday: 10AM - 6PM"],
+    },
+  ]
 
   return (
     <div className="page">
@@ -48,67 +98,66 @@ export default function ContactPage() {
       </div>
 
       <div className="container">
+        <div className="contact-intro">
+          <h2>Get In Touch</h2>
+          <p>
+            Have questions about our products or services? Our team is here to help. Fill out the form below or use our
+            contact information to reach out to us directly.
+          </p>
+        </div>
+
         <div className="contact-container">
-          <div className="contact-info">
-            <h2>Get In Touch</h2>
-            <p>We're here to help with any questions about our products or services.</p>
-
-            <div className="info-item">
-              <h3>Customer Support</h3>
-              <p>Email: support@sporthub.com</p>
-              <p>Phone: (555) 123-4567</p>
-              <p>Hours: 9:00 AM - 6:00 PM, Monday to Friday</p>
-            </div>
-
-            <div className="info-item">
-              <h3>Store Locations</h3>
-              <div className="location-item">
-                <h4>Main Store</h4>
-                <p>123 Sports Avenue, Downtown</p>
-                <p>Open daily: 10:00 AM - 9:00 PM</p>
+          <div className="contact-info-section">
+            {contactInfo.map((info, index) => (
+              <div className="contact-card" key={index}>
+                <div className="contact-icon">{info.icon}</div>
+                <div className="contact-details">
+                  <h3>{info.title}</h3>
+                  {info.details.map((detail, i) => (
+                    <p key={i}>{detail}</p>
+                  ))}
+                </div>
               </div>
-              <div className="location-item">
-                <h4>Outlet Store</h4>
-                <p>456 Runner's Road, East Side</p>
-                <p>Open daily: 11:00 AM - 7:00 PM</p>
-              </div>
-            </div>
-
-            <div className="social-links">
-              <h3>Follow Us</h3>
-              <div className="social-icons">
-                <a href="#" className="social-icon">
-                  Facebook
-                </a>
-                <a href="#" className="social-icon">
-                  Instagram
-                </a>
-                <a href="#" className="social-icon">
-                  Twitter
-                </a>
-                <a href="#" className="social-icon">
-                  YouTube
-                </a>
-              </div>
-            </div>
+            ))}
           </div>
 
-          <div className="contact-form-container">
-            <h2>Send Us a Message</h2>
-            {formSubmitted ? (
-              <div className="success-message">
-                <p>Thank you for your message! We'll get back to you soon.</p>
+          <div className="contact-form-section">
+            {isSubmitted ? (
+              <div className="form-success">
+                <CheckCircle size={48} className="success-icon" />
+                <h3>Thank You!</h3>
+                <p>Your message has been sent successfully. We'll get back to you as soon as possible.</p>
               </div>
             ) : (
               <form className="contact-form" onSubmit={handleSubmit}>
+                <h3>Send Us a Message</h3>
+
                 <div className="form-group">
-                  <label htmlFor="name">Name</label>
-                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+                  <label htmlFor="name">Your Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={errors.name ? "error" : ""}
+                    placeholder="John Doe"
+                  />
+                  {errors.name && <span className="error-message">{errors.name}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+                  <label htmlFor="email">Your Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={errors.email ? "error" : ""}
+                    placeholder="john.doe@example.com"
+                  />
+                  {errors.email && <span className="error-message">{errors.email}</span>}
                 </div>
 
                 <div className="form-group">
@@ -119,55 +168,89 @@ export default function ContactPage() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    required
+                    className={errors.subject ? "error" : ""}
+                    placeholder="Product Inquiry"
                   />
+                  {errors.subject && <span className="error-message">{errors.subject}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="message">Message</label>
+                  <label htmlFor="message">Your Message</label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    rows="6"
-                    required
+                    className={errors.message ? "error" : ""}
+                    placeholder="How can we help you?"
+                    rows="5"
                   ></textarea>
+                  {errors.message && <span className="error-message">{errors.message}</span>}
                 </div>
 
-                <button type="submit" className="submit-button">
-                  Send Message
+                <button type="submit" className="submit-button" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>
+                      <div className="button-spinner"></div>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send size={18} />
+                      Send Message
+                    </>
+                  )}
                 </button>
               </form>
             )}
           </div>
         </div>
 
-        <div className="map-container">
-          <h2>Find Us</h2>
-          <div className="map-placeholder">
-            <img src="/api/placeholder/1200/400" alt="Store Map" className="map-image" />
+        <div className="map-section">
+          <h2>Visit Our Store</h2>
+          <div className="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.11976397304605!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1620796594975!5m2!1sen!2s"
+              width="100%"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              title="Store Location"
+            ></iframe>
           </div>
         </div>
 
         <section className="faq-section">
           <h2>Frequently Asked Questions</h2>
-          <div className="faq-container">
+          <div className="faq-grid">
+            <div className="faq-item">
+              <h3>What payment methods do you accept?</h3>
+              <p>
+                We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and Apple Pay. All
+                payments are securely processed.
+              </p>
+            </div>
             <div className="faq-item">
               <h3>What is your return policy?</h3>
-              <p>We offer a 30-day return policy on all unused items with original packaging and receipt.</p>
+              <p>
+                We offer a 30-day return policy for all unused items in their original packaging. Please contact our
+                customer service team to initiate a return.
+              </p>
             </div>
             <div className="faq-item">
-              <h3>How long does shipping take?</h3>
-              <p>Standard shipping takes 3-5 business days. Express shipping options are available at checkout.</p>
-            </div>
-            <div className="faq-item">
-              <h3>Do you offer international shipping?</h3>
-              <p>Yes, we ship to most countries worldwide. International shipping times vary by location.</p>
+              <h3>Do you ship internationally?</h3>
+              <p>
+                Yes, we ship to most countries worldwide. International shipping rates and delivery times vary depending
+                on the destination.
+              </p>
             </div>
             <div className="faq-item">
               <h3>How can I track my order?</h3>
-              <p>Once your order ships, you'll receive a tracking number via email to monitor your delivery.</p>
+              <p>
+                Once your order ships, you'll receive a confirmation email with tracking information. You can also track
+                your order in your account dashboard.
+              </p>
             </div>
           </div>
         </section>

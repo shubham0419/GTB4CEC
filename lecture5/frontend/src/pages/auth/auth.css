@@ -29,7 +29,7 @@
 
 .auth-image-container {
   flex: 1;
-  background: linear-gradient(135deg, #3c096c 0%, #38b000 100%);
+  background: linear-gradient(135deg, #7b2cbf 0%, #38b000 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,7 +120,7 @@
 }
 
 .auth-input:focus {
-  border-color: #3c096c;
+  border-color: #7b2cbf;
   box-shadow: 0 0 0 2px rgba(112, 224, 0, 0.2);
   outline: none;
 }
@@ -164,7 +164,7 @@
 }
 
 .forgot-password {
-  color: #3c096c;
+  color: #7b2cbf;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
@@ -176,7 +176,7 @@
 }
 
 .auth-button {
-  background-color: #3c096c;
+  background-color: #7b2cbf;
   color: white;
   border: none;
   border-radius: 6px;
@@ -282,7 +282,7 @@
 }
 
 .auth-link {
-  color: #3c096c;
+  color: #7b2cbf;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;

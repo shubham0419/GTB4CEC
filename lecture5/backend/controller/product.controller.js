@@ -122,4 +122,14 @@ const getProductsByCategory = async(req,res)=>{
   }
 }
 
-module.exports = {createProduct,updateProduct,deleteProduct,getAllProducts,getProductsByCategory};
+const getProductById = async(req,res)=>{
+  try {
+    const {id} = req.params;
+    const product = await Product.findOne({_id:id});
+    res.status(200).json({message:"Product fetched successfully",product})
+  } catch (error) {
+    res.status(402).json({message:error.message});
+  }
+}
+
+module.exports = {createProduct,updateProduct,deleteProduct,getAllProducts,getProductsByCategory,getProductById};

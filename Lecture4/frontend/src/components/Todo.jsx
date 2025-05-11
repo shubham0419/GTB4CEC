@@ -9,7 +9,7 @@ const Todo = ({singleTodo}) => {
 
   const handleDelete = async()=>{
     try {
-      let res = await axios.delete(`http://localhost:5000/delete/${singleTodo.id}`);
+      let res = await axios.delete(`http://localhost:4000/delete/${singleTodo.id}`);
       // setter(res.data.TODOS); 
       dispatch(updateTodo(res.data.TODOS));
     } catch (error) {

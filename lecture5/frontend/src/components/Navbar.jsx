@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Search, ShoppingCart, Menu, X, User, Heart, LogOut } from "lucide-react"
-import Cookies from "js-cookie";
+import { Search, ShoppingCart, Menu, X, User, Heart, LogOut, Settings } from "lucide-react"
 import "./Navbar.css"
-import { logoutUser } from "../services/api/auth";
-import { useSelector } from "react-redux";
+import { logoutUser } from "../services/api/auth"
+import { useSelector } from "react-redux"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -15,8 +14,8 @@ export default function Navbar() {
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)
   const [showUserDropdown, setShowUserDropdown] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const user = useSelector(state=>state.userData.value) ?? null;
-  const navigate = useNavigate();
+  const user = useSelector((state) => state.userData.value) ?? null
+  const navigate = useNavigate()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -40,7 +39,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     logoutUser()
-    navigate("/login");
+    navigate("/login")
     setShowUserDropdown(false)
   }
 
@@ -140,12 +139,13 @@ export default function Navbar() {
                         <span className="user-email">{user.email}</span>
                       </div>
                       <div className="dropdown-divider"></div>
-                      {/* <Link to="/profile" className="dropdown-item">
-                        My Profile
-                      </Link>
-                      <Link to="/orders" className="dropdown-item">
-                        My Orders
-                      </Link> */}
+                      {/* Admin Dashboard Link */}
+                      {user.role === "admin" && (
+                        <Link to="/admin/dashboard" className="dropdown-item">
+                          <Settings size={16} />
+                          <span>Admin Dashboard</span>
+                        </Link>
+                      )}
                       <button onClick={handleLogout} className="dropdown-item logout-item">
                         <LogOut size={16} />
                         <span>Logout</span>
@@ -205,6 +205,11 @@ export default function Navbar() {
           <Link to="/contact" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
             Contact
           </Link>
+          {user && user.role === "admin" && (
+            <Link to="/admin/dashboard" className="mobile-nav-link" onClick={() => setIsMenuOpen(false)}>
+              Admin Dashboard
+            </Link>
+          )}
         </div>
 
         <div className="mobile-nav-actions">
@@ -226,10 +231,6 @@ export default function Navbar() {
                   <span>Hello, {user.name || user.email.split("@")[0]}</span>
                 </div>
                 <div className="mobile-action-buttons">
-                  {/* <Link to="/profile" className="mobile-action-link" onClick={() => setIsMenuOpen(false)}>
-                    <User />
-                    <span>Profile</span>
-                  </Link> */}
                   <Link to="/wishlist" className="mobile-action-link" onClick={() => setIsMenuOpen(false)}>
                     <Heart />
                     <span>Wishlist ({wishlistCount})</span>
