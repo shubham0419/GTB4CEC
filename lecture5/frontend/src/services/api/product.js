@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import Cookies from "js-cookie";
 const BaseUrl = "http://localhost:4000";
 
 export const getAllProducts = async (
@@ -59,7 +59,12 @@ export const createCategory = async (categoryName)=>{
     const payload = {
       name:categoryName
     }
-    const res = await axios.post(BaseUrl+"/product/category/create",payload);
+    const token = Cookies.get("token");
+    const res = await axios.post(BaseUrl+"/product/category/create",payload,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    });
     return res.data.category.name;
   } catch (error) {
     console.log(error);

@@ -4,7 +4,7 @@ import { Edit, Trash2, Plus, Tag, Package, Component } from "lucide-react"
 import "../pages.css"
 import "./admin.css"
 import { useSelector } from "react-redux"
-import { getAllProducts } from "../../services/api/product"
+import { createCategory, getAllProducts } from "../../services/api/product"
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("products")
@@ -206,8 +206,9 @@ export default function AdminDashboard() {
     setCategory(e.target.value);
   }
 
-  const handleCategorySubmit = async ()=>{
-    
+  const handleCategorySubmit = async (e)=>{
+    e.preventDefault();
+    const name = await createCategory(category);
   }
 
   return (
