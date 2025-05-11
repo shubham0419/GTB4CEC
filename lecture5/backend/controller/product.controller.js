@@ -1,3 +1,4 @@
+const Category = require("../model/category.model");
 const Product = require("../model/product.model")
 
 const createProduct = async (req,res)=>{
@@ -132,4 +133,14 @@ const getProductById = async(req,res)=>{
   }
 }
 
-module.exports = {createProduct,updateProduct,deleteProduct,getAllProducts,getProductsByCategory,getProductById};
+const createCategory = async(req,res)=>{
+  try {
+    const {name} = req.body;
+    const newcategory = await Category.create({name});
+    res.status(200).json({message:"category created successfully",category:newcategory})
+  } catch (error) {
+    
+  }
+}
+
+module.exports = {createProduct,updateProduct,deleteProduct,getAllProducts,getProductsByCategory,getProductById,createCategory};

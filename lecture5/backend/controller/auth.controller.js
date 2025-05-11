@@ -8,13 +8,13 @@ const login = async(req,res)=>{
     const user = await Users.findOne({email});
 
     if(!user){
-      res.status(403).json({message:"Invalid email or Password"});
+      return res.status(403).json({message:"Invalid email or Password"});
     }
     
     const isMatched = await bcrypt.compare(password,user.password);
 
     if(!isMatched){
-      res.status(403).json({message:"Invalid email or Password"});
+      return res.status(403).json({message:"Invalid email or Password"});
     }
     
     const token = JWT.sign({name:user.name,email:user.email,id:user._id,role:user.role},process.env.JWT_SECRET,{expiresIn:"7d"});

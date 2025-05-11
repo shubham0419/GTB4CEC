@@ -54,6 +54,18 @@ export const getProductById = async (productId) => {
   }
 }
 
+export const createCategory = async (categoryName)=>{
+  try {
+    const payload = {
+      name:categoryName
+    }
+    const res = await axios.post(BaseUrl+"/product/category/create",payload);
+    return res.data.category.name;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const getProductsByCategory = async (category) => {};
 
 export const getNewArrivals = async () => {};

@@ -34,7 +34,8 @@ export default function AdminDashboard() {
     { _id: "3", name: "Football" },
     { _id: "4", name: "Tennis" },
     { _id: "5", name: "Golf" },
-  ])
+  ]);
+  const [category,setCategory] = useState("");
 
   const user = useSelector((state) => state.userData.value)
   const navigate = useNavigate()
@@ -199,6 +200,14 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error("Error updating sale status:", error)
     }
+  }
+
+  const handleCategoryChange = (e)=>{
+    setCategory(e.target.value);
+  }
+
+  const handleCategorySubmit = async ()=>{
+    
   }
 
   return (
@@ -600,7 +609,7 @@ export default function AdminDashboard() {
 
         {activeTab === "category" && (
           <div className="admin-content">
-            <form className="admin-form">
+            <form className="admin-form" onSubmit={handleCategorySubmit}>
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="name">Category Name*</label>
@@ -608,8 +617,7 @@ export default function AdminDashboard() {
                     type="text"
                     id="name"
                     name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
+                    onChange={handleCategoryChange}
                     required
                     className="form-input"
                   />
